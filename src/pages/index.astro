@@ -1,0 +1,115 @@
+---
+import Hero3D from '../components/Hero3D.jsx';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ember — Immersive Starter</title>
+    <meta
+      name="description"
+      content="Free & open-source starter for cinematic, scroll-driven websites. Astro + React Three Fiber + GSAP + Lenis."
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#">EMBER</a>
+      <nav>
+        <a href="#statement">Studio</a>
+        <a href="#showcase">Work</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn-pill" href="#contact">Let's talk</a>
+    </header>
+
+    <main>
+      <!-- HERO — WebGL island + letter-assembled headline -->
+      <section class="hero">
+        <div class="hero-canvas">
+          <Hero3D client:visible />
+        </div>
+        <div class="hero-scrim"></div>
+        <div class="hero-copy">
+          <p class="eyebrow">A free &amp; open-source starter</p>
+          <h1 class="display hero-title">
+            <span class="hero-line" data-split-chars>Most websites are read.</span>
+            <span class="hero-line" data-split-chars>Our websites are <em class="accent">experienced.</em></span>
+          </h1>
+        </div>
+        <div class="scroll-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+      </section>
+
+      <!-- STATEMENT -->
+      <section class="statement" id="statement">
+        <div class="statement-grid">
+          <h2 class="display" data-reveal>
+            A starter for sites that feel <em class="accent">alive.</em>
+          </h2>
+          <p data-reveal>
+            Astro ships zero JavaScript by default — the page is static HTML until
+            you ask for more. The WebGL hero is a React island that hydrates only
+            when scrolled into view. GSAP drives the scroll choreography, Lenis
+            makes the scroll itself feel expensive. Every layer is free and
+            open source, and the whole thing deploys anywhere static hosting lives.
+          </p>
+        </div>
+      </section>
+
+      <!-- PINNED SHOWCASE — scrubbed zoom + caption -->
+      <section class="pin-section" id="showcase" data-pin>
+        <div class="pin-inner">
+          <div class="pin-media" data-pin-media>
+            <!-- Drop a ComfyUI render at public/assets/showcase.jpg and uncomment:
+            <img src="/assets/showcase.jpg" alt="Cinematic showcase artwork" data-speed="0.4" />
+            -->
+            <p class="pin-placeholder">
+              Pinned &amp; scrubbed media panel<br />
+              Drop a ComfyUI render at<br /><code>public/assets/showcase.jpg</code>
+            </p>
+          </div>
+          <div class="pin-caption" data-pin-caption>
+            <p class="eyebrow">Scroll choreography</p>
+            <h3 class="display">One pinned section,<br />fully <em class="accent">scrubbed.</em></h3>
+            <p>
+              The panel zooms out as you scroll through it, the caption rises in —
+              all driven by a single GSAP timeline tied to scroll position.
+              Replace the gradient with your own generated artwork.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MARQUEE -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span>Crafted with fire</span><span class="solid">✦</span>
+          <span>Free &amp; open source</span><span class="solid">✦</span>
+          <span>Crafted with fire</span><span class="solid">✦</span>
+          <span>Free &amp; open source</span><span class="solid">✦</span>
+          <span>Crafted with fire</span><span class="solid">✦</span>
+          <span>Free &amp; open source</span><span class="solid">✦</span>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="site-footer" id="contact">
+        <p class="eyebrow" data-reveal>Start a project</p>
+        <h2 class="display" data-reveal>
+          Let's make something <em class="accent">unforgettable.</em>
+        </h2>
+        <p data-reveal><a class="btn-pill" href="mailto:hello@example.com">Get in touch</a></p>
+        <div class="footer-bar">
+          <span>© 2026 Ember Starter</span>
+          <span class="fire">Crafted with fire.</span>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      import '../scripts/scroll.js';
+    </script>
+  </body>
+</html>
