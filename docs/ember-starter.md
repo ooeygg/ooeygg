@@ -40,6 +40,12 @@ npm start        # serve dist/ with compression, caching and security headers
 ```
 
 Deploy `dist/` anywhere static: Vercel, Netlify, Cloudflare Pages, GitHub Pages.
+
+**GitHub Pages** is wired up: `.github/workflows/pages.yml` builds and deploys
+on every push to `main`, at `https://<owner>.github.io/<repo>/`. To serve from a
+subpath, the build reads `BASE_PATH` (and `SITE`); locally and on your own server
+both are unset and the site serves from `/`. In templates, build root-relative
+URLs from `import.meta.env.BASE_URL` rather than a bare `/`.
 Never serve `npm run dev` publicly: it ships ~27 MB of unminified dev modules.
 
 ## What's wired up
