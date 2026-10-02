@@ -2,6 +2,9 @@
 import Hero3D from '../components/Hero3D.jsx';
 import { SCREENS } from '../film/choreography.js';
 import '../styles/global.css';
+
+// Root-relative URLs must carry the base path (the site lives under /ooeygg/ on GitHub Pages).
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 
 <!doctype html>
@@ -14,7 +17,7 @@ import '../styles/global.css';
       name="description"
       content="Free & open-source starter for cinematic, scroll-driven websites. Astro + React Three Fiber + Theatre.js + Lenis."
     />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
     <!-- Film mode before first paint, so the stage never shifts. Reduced motion and
          no-JS visitors get the page as a normal document instead. -->
     <script is:inline>
@@ -74,7 +77,7 @@ import '../styles/global.css';
         <div class="pin-inner">
           <div class="pin-media" data-film="Showcase / media">
             <!-- Drop a ComfyUI render at public/assets/showcase.jpg and uncomment:
-            <img src="/assets/showcase.jpg" alt="Cinematic showcase artwork" />
+            <img src={`${base}assets/showcase.jpg`} alt="Cinematic showcase artwork" />
             -->
             <p class="pin-placeholder">
               Scrubbed media panel<br />
