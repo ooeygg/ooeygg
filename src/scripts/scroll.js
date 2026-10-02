@@ -40,8 +40,11 @@ function splitNode(node) {
 }
 
 document.querySelectorAll('[data-split-chars]').forEach((el) => {
-  el.setAttribute('aria-label', el.textContent.trim());
+  const label = document.createElement('span');
+  label.className = 'sr-only';
+  label.textContent = el.textContent.trim();
   splitNode(el);
+  el.prepend(label);
   if (!reduceMotion) {
     gsap.fromTo(
       el.querySelectorAll('.char'),

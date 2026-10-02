@@ -35,6 +35,11 @@ body {
 
 img { max-width: 100%; display: block; }
 
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
 /* Display type — drop your own variable font files in and swap the stack */
 .display {
   font-family: "Space Grotesk", -apple-system, "Segoe UI", sans-serif;
@@ -92,8 +97,10 @@ a { color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
   background: var(--ember);
-  color: #fff;
+  color: var(--bg);
+  font-weight: 600;
   border: none;
   border-radius: 999px;
   padding: 0.7rem 1.4rem;
@@ -102,14 +109,24 @@ a { color: inherit; }
   letter-spacing: 0.12em;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 0 0 24px rgba(226, 85, 44, 0.45);
-  animation: pill-glow 2.8s ease-in-out infinite;
+  box-shadow: 0 0 18px rgba(226, 85, 44, 0.35);
   transition: transform 0.25s ease, background 0.25s ease;
+}
+/* Glow pulse animates opacity of a pre-blurred shadow layer so it stays on the compositor */
+.btn-pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 34px rgba(226, 85, 44, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  animation: pill-glow 2.8s ease-in-out infinite;
 }
 .btn-pill:hover { transform: translateY(-2px); background: var(--ember-bright); }
 @keyframes pill-glow {
-  0%, 100% { box-shadow: 0 0 18px rgba(226, 85, 44, 0.35); }
-  50% { box-shadow: 0 0 34px rgba(226, 85, 44, 0.6); }
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
 }
 
 /* ——— Hero ——— */
@@ -121,8 +138,24 @@ a { color: inherit; }
   display: flex;
   align-items: center;
 }
-.hero-canvas { position: absolute; inset: 0; }
+.hero-canvas { position: absolute; inset: 0; background: var(--bg); }
 .hero-3d, .hero-3d canvas { width: 100%; height: 100%; }
+.hero-3d { position: relative; opacity: 0; transition: opacity 1.2s ease; }
+.hero-3d.is-ready { opacity: 1; }
+/* Molten-core poster: paints instantly, sits under the WebGL canvas until it fades in,
+   and is the hero on devices without hardware WebGL. Breathes via transform/opacity only. */
+.hero-poster {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(10, 9, 8, 0.75) 100%);
+}
+.hero-poster::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(238, 110, 69, 0.55) 0, rgba(226, 85, 44, 0.28) 14vmin, rgba(226, 85, 44, 0.08) 30vmin, transparent 46vmin);
+  animation: core-breathe 6s ease-in-out infinite;
+}
+@keyframes core-breathe { 0%, 100% { transform: scale(1); opacity: 0.85; } 50% { transform: scale(1.08); opacity: 1; } }
+.hero-canvas astro-island { position: absolute; inset: 0; }
 .hero-scrim {
   position: absolute; inset: 0;
   background: radial-gradient(ellipse at 50% 60%, transparent 30%, rgba(10, 9, 8, 0.55) 100%),
@@ -212,5 +245,5 @@ a { color: inherit; }
 .footer-bar .fire { color: var(--ember-bright); }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track, .btn-pill, .scroll-cue i { animation: none; }
+  .marquee-track, .btn-pill::after, .scroll-cue i, .hero-poster::before { animation: none; }
 }

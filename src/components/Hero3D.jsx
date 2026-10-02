@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, MeshDistortMaterial } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
@@ -73,14 +73,33 @@ function Core() {
   );
 }
 
-/* Hero canvas — mount with client:visible so it only hydrates in view */
+/* Hero canvas — hydrated after first paint (client:idle); fades in over the CSS poster
+   once the first frame renders, and stops rendering while scrolled out of view. */
 export default function Hero3D() {
+  const wrap = useRef();
+  const [ready, setReady] = useState(false);
+  const [inView, setInView] = useState(true);
+
+  useEffect(() => {
+    const io = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting));
+    io.observe(wrap.current);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <div className="hero-3d" aria-hidden="true">
+    <div ref={wrap} className={ready ? 'hero-3d is-ready' : 'hero-3d'} aria-hidden="true">
       <Canvas
         dpr={[1, 1.75]}
         camera={{ position: [0, 0, 5], fov: 42 }}
-        gl={{ antialias: true, alpha: false }}
+        // Hold rendering until shaders are compiled (in parallel where the GPU supports it),
+        // then fade in; pause entirely while the hero is scrolled out of view.
+        frameloop={ready && inView ? 'always' : 'never'}
+        // EffectComposer renders offscreen with its own multisampling; MSAA on the
+        // default framebuffer would be wasted work.
+        gl={{ antialias: false, alpha: false, powerPreference: 'high-performance' }}
+        onCreated={({ gl, scene, camera }) =>
+          gl.compileAsync(scene, camera).catch(() => {}).finally(() => setReady(true))
+        }
       >
         <color attach="background" args={['#0a0908']} />
         <fog attach="fog" args={['#0a0908', 6, 12]} />

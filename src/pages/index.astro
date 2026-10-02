@@ -13,6 +13,7 @@ import '../styles/global.css';
       name="description"
       content="Free & open-source starter for cinematic, scroll-driven websites. Astro + React Three Fiber + GSAP + Lenis."
     />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
     <header class="site-header">
@@ -29,7 +30,8 @@ import '../styles/global.css';
       <!-- HERO — WebGL island + letter-assembled headline -->
       <section class="hero">
         <div class="hero-canvas">
-          <Hero3D client:visible />
+          <div class="hero-poster"></div>
+          <Hero3D client:afterload />
         </div>
         <div class="hero-scrim"></div>
         <div class="hero-copy">
