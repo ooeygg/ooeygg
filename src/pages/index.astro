@@ -1,5 +1,6 @@
 ---
 import Hero3D from '../components/Hero3D.jsx';
+import { SCREENS } from '../film/choreography.js';
 import '../styles/global.css';
 ---
 
@@ -11,11 +12,16 @@ import '../styles/global.css';
     <title>Ember — Immersive Starter</title>
     <meta
       name="description"
-      content="Free & open-source starter for cinematic, scroll-driven websites. Astro + React Three Fiber + GSAP + Lenis."
+      content="Free & open-source starter for cinematic, scroll-driven websites. Astro + React Three Fiber + Theatre.js + Lenis."
     />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Film mode before first paint, so the stage never shifts. Reduced motion and
+         no-JS visitors get the page as a normal document instead. -->
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('is-film');
+    </script>
   </head>
-  <body>
+  <body style={`--film-screens: ${SCREENS}`}>
     <header class="site-header">
       <a class="brand" href="#">EMBER</a>
       <nav>
@@ -26,92 +32,106 @@ import '../styles/global.css';
       <a class="btn-pill" href="#contact">Let's talk</a>
     </header>
 
-    <main>
-      <!-- HERO — WebGL island + letter-assembled headline -->
-      <section class="hero">
-        <div class="hero-canvas">
-          <div class="hero-poster"></div>
-          <Hero3D client:afterload />
-        </div>
+    <main class="stage">
+      <!-- BACKDROP — CSS poster core, then the WebGL island fading in over it -->
+      <div class="hero-canvas">
+        <div class="hero-poster"><div class="hero-poster-core"></div></div>
+        <Hero3D client:afterload />
         <div class="hero-scrim"></div>
-        <div class="hero-copy">
+      </div>
+
+      <!-- HERO — letter-assembled headline -->
+      <section class="scene hero" data-chapter="hero">
+        <div class="hero-copy" data-film="Hero / copy">
           <p class="eyebrow">A free &amp; open-source starter</p>
           <h1 class="display hero-title">
             <span class="hero-line" data-split-chars>Most websites are read.</span>
             <span class="hero-line" data-split-chars>Our websites are <em class="accent">experienced.</em></span>
           </h1>
         </div>
-        <div class="scroll-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+        <div class="scroll-cue" aria-hidden="true" data-film="Hero / cue"><span>Scroll</span><i></i></div>
       </section>
 
       <!-- STATEMENT -->
-      <section class="statement" id="statement">
+      <section class="scene statement" id="statement" data-chapter="statement">
         <div class="statement-grid">
-          <h2 class="display" data-reveal>
+          <h2 class="display" data-film="Statement / heading">
             A starter for sites that feel <em class="accent">alive.</em>
           </h2>
-          <p data-reveal>
+          <p data-film="Statement / body">
             Astro ships zero JavaScript by default — the page is static HTML until
-            you ask for more. The WebGL hero is a React island that hydrates only
-            when scrolled into view. GSAP drives the scroll choreography, Lenis
-            makes the scroll itself feel expensive. Every layer is free and
-            open source, and the whole thing deploys anywhere static hosting lives.
+            you ask for more. The WebGL stage hydrates only after first paint, and
+            only on devices with a real GPU. Theatre.js choreographs every scene on
+            one timeline, and Lenis turns your scroll into its playhead. Every layer
+            is free and open source, and the whole thing deploys anywhere static
+            hosting lives.
           </p>
         </div>
       </section>
 
-      <!-- PINNED SHOWCASE — scrubbed zoom + caption -->
-      <section class="pin-section" id="showcase" data-pin>
+      <!-- SHOWCASE — scrubbed zoom + caption -->
+      <section class="scene showcase" id="showcase" data-chapter="showcase" data-film="Showcase / scene">
         <div class="pin-inner">
-          <div class="pin-media" data-pin-media>
+          <div class="pin-media" data-film="Showcase / media">
             <!-- Drop a ComfyUI render at public/assets/showcase.jpg and uncomment:
-            <img src="/assets/showcase.jpg" alt="Cinematic showcase artwork" data-speed="0.4" />
+            <img src="/assets/showcase.jpg" alt="Cinematic showcase artwork" />
             -->
             <p class="pin-placeholder">
-              Pinned &amp; scrubbed media panel<br />
+              Scrubbed media panel<br />
               Drop a ComfyUI render at<br /><code>public/assets/showcase.jpg</code>
             </p>
           </div>
-          <div class="pin-caption" data-pin-caption>
+          <div class="pin-caption" data-film="Showcase / caption">
             <p class="eyebrow">Scroll choreography</p>
-            <h3 class="display">One pinned section,<br />fully <em class="accent">scrubbed.</em></h3>
+            <h3 class="display">One timeline,<br />fully <em class="accent">scrubbed.</em></h3>
             <p>
-              The panel zooms out as you scroll through it, the caption rises in —
-              all driven by a single GSAP timeline tied to scroll position.
-              Replace the gradient with your own generated artwork.
+              The panel settles as the film plays, the caption rises in — every
+              value is a keyframe on a single Theatre.js timeline, with your scroll
+              as the playhead. Replace the gradient with your own generated artwork.
             </p>
           </div>
         </div>
       </section>
 
       <!-- MARQUEE -->
-      <div class="marquee" aria-hidden="true">
-        <div class="marquee-track">
-          <span>Crafted with fire</span><span class="solid">✦</span>
-          <span>Free &amp; open source</span><span class="solid">✦</span>
-          <span>Crafted with fire</span><span class="solid">✦</span>
-          <span>Free &amp; open source</span><span class="solid">✦</span>
-          <span>Crafted with fire</span><span class="solid">✦</span>
-          <span>Free &amp; open source</span><span class="solid">✦</span>
+      <div class="scene marquee-scene" aria-hidden="true">
+        <div class="marquee" data-film="Marquee / band">
+          <div class="marquee-track">
+            <span>Crafted with fire</span><span class="solid">✦</span>
+            <span>Free &amp; open source</span><span class="solid">✦</span>
+            <span>Crafted with fire</span><span class="solid">✦</span>
+            <span>Free &amp; open source</span><span class="solid">✦</span>
+            <span>Crafted with fire</span><span class="solid">✦</span>
+            <span>Free &amp; open source</span><span class="solid">✦</span>
+          </div>
         </div>
       </div>
 
-      <!-- FOOTER -->
-      <footer class="site-footer" id="contact">
-        <p class="eyebrow" data-reveal>Start a project</p>
-        <h2 class="display" data-reveal>
-          Let's make something <em class="accent">unforgettable.</em>
-        </h2>
-        <p data-reveal><a class="btn-pill" href="mailto:hello@example.com">Get in touch</a></p>
-        <div class="footer-bar">
+      <!-- CONTACT -->
+      <footer class="scene site-footer" id="contact" data-chapter="contact">
+        <div class="footer-cta">
+          <div data-film="Contact / heading">
+            <p class="eyebrow">Start a project</p>
+            <h2 class="display">Let's make something <em class="accent">unforgettable.</em></h2>
+          </div>
+          <p data-film="Contact / cta"><a class="btn-pill" href="mailto:hello@example.com">Get in touch</a></p>
+        </div>
+        <div class="footer-bar" data-film="Contact / bar">
           <span>© 2026 Ember Starter</span>
           <span class="fire">Crafted with fire.</span>
         </div>
       </footer>
     </main>
 
+    <!-- The scroll range the film plays across; nothing in it is visible. -->
+    <div class="film-track" aria-hidden="true"></div>
+    <div class="film-progress" aria-hidden="true">
+      <span class="film-progress-label">01 — Ember</span>
+      <span class="film-progress-rail"><span class="film-progress-fill"></span></span>
+    </div>
+
     <script>
-      import '../scripts/scroll.js';
+      import '../scripts/film.js';
     </script>
   </body>
 </html>
