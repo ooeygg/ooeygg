@@ -1,4 +1,4 @@
-# Ember — Immersive Starter
+# Ember: Immersive Starter
 
 A free & open-source starter for cinematic, scroll-driven websites in the
 Aalto Digital Atelier vein. Nothing on the page scrolls: the stage is pinned to
@@ -10,17 +10,17 @@ open-source / gratis.
 
 | Layer | Tool | License |
 |---|---|---|
-| Framework | [Astro](https://astro.build) — static-first, islands | MIT |
+| Framework | [Astro](https://astro.build): static-first, islands | MIT |
 | 3D islands | React + [@react-three/fiber](https://r3f.docs.pmnd.rs) + [drei](https://drei.docs.pmnd.rs) | MIT |
-| Choreography | [Theatre.js](https://www.theatrejs.com) — one keyframed timeline, visual Studio in dev | Apache-2.0 (core) / AGPL (studio, dev only) |
-| Smooth scroll | [Lenis](https://lenis.darkroom.engineering) — wheel *and* touch | MIT |
-| WebGL plumbing | [r3f-scroll-rig](https://github.com/14islands/r3f-scroll-rig) — one persistent `GlobalCanvas`, scroll store | ISC |
+| Choreography | [Theatre.js](https://www.theatrejs.com): one keyframed timeline, visual Studio in dev | Apache-2.0 (core) / AGPL (studio, dev only) |
+| Smooth scroll | [Lenis](https://lenis.darkroom.engineering): wheel *and* touch | MIT |
+| WebGL plumbing | [r3f-scroll-rig](https://github.com/14islands/r3f-scroll-rig): one persistent `GlobalCanvas`, scroll store | ISC |
 | Imagery | Your own ComfyUI pipeline (see below) | Yours |
 
 **Why Astro over Next.js here:** this is a cinematic marketing site, not an app.
-Astro ships zero JS by default and hydrates only the islands you mark —
-the WebGL stage mounts with a custom `client:afterload` directive (after first
-paint, GPU devices only), everything else is static HTML.
+Astro ships zero JS by default and hydrates only the islands you mark.
+The WebGL stage mounts with a custom `client:afterload` directive (after first
+paint, GPU devices only), and everything else is static HTML.
 Next.js would ship a full React runtime for content that's mostly static with
 a few 3D moments. Tradeoff to know: Astro islands are separate React roots, so
 if a 3D scene ever needs lots of live shared state with surrounding UI,
@@ -80,36 +80,36 @@ builds.
 
 ### The markup API (in `src/scripts/film.js`)
 
-- `data-film="Sheet / object"`: element driven by that object (`opacity`,
+* `data-film="Sheet / object"`: element driven by that object (`opacity`,
   `y` in vh, `scale`)
-- `data-chapter="id"`: tabbing into it plays the film to that chapter, so
+* `data-chapter="id"`: tabbing into it plays the film to that chapter, so
   keyboard focus never lands on something invisible
-- `a[href="#id"]`: plays the film to chapter `id` instead of jumping
-- `data-split-chars`: letter assembly on load (keeps nested `<em>`)
+* `a[href="#id"]`: plays the film to chapter `id` instead of jumping
+* `data-split-chars`: letter assembly on load (keeps nested `<em>`)
 
 ### Graceful paths
 
-- **No GPU** (software WebGL, blocklisted drivers): the 3D bundle is never
+* **No GPU** (software WebGL, blocklisted drivers): the 3D bundle is never
   downloaded. A CSS molten-core poster follows the same choreography.
-- **`prefers-reduced-motion`** or **no JS**: no film. The page is a normal
+* **`prefers-reduced-motion`** or **no JS**: no film. The page is a normal
   stacked document with a still poster.
-- **Performance**: Lighthouse mobile scores 100/100/100/100, with 0 ms TBT
+* **Performance**: Lighthouse mobile scores 100/100/100/100, with 0 ms TBT
   and 44 KB on first load. WebGL hydrates after the page has loaded.
 
 ## Generating artwork with your ComfyUI stack
 
-Your loaders — `krea2_turbo_fp8_scaled` (UNet) · `qwen3vl_4b_fp8_scaled` (CLIP) ·
-`qwen_image_vae` (VAE) — are a text-to-image pipeline for cinematic key art.
+Your loaders (`krea2_turbo_fp8_scaled` (UNet) · `qwen3vl_4b_fp8_scaled` (CLIP) ·
+`qwen_image_vae` (VAE)) are a text-to-image pipeline for cinematic key art.
 A starter API-format workflow is at `public/workflows/krea2-turbo-txt2img.json`
 (import via ComfyUI's API-format workflow loader).
 
-**Starting-point settings** (distilled turbo model — verify against the model card):
-- Steps 6–10, CFG ~1.0, sampler `euler`, scheduler `simple`
-- 1920×1080 for hero/showcase panels, 1600×2000 for portrait cards
-- If latents come out wrong-shaped, swap `EmptyLatentImage` for the 16-channel
+**Starting-point settings** (distilled turbo model; verify against the model card):
+* Steps 6 to 10, CFG ~1.0, sampler `euler`, scheduler `simple`
+* 1920×1080 for hero/showcase panels, 1600×2000 for portrait cards
+* If latents come out wrong-shaped, swap `EmptyLatentImage` for the 16-channel
   empty-latent node matching the Qwen Image VAE
 
-**Prompt direction for this aesthetic** — dark warm near-black backgrounds
+**Prompt direction for this aesthetic:** dark warm near-black backgrounds
 (`#0a0908`), ember-orange rim light (`#e2552c`), volumetric glow, cinematic
 vignette, film-grain-free clean renders (grain is added in post via CSS/canvas):
 
@@ -130,7 +130,7 @@ src/
   film/project.js            # shared Theatre project, Lenis hand-off, Studio in dev
   scripts/film.js            # Lenis → playhead, DOM scenes, nav/focus, chapter rail
   components/Hero3D.jsx      # r3f-scroll-rig GlobalCanvas: core, embers, bloom
-  directives/afterload.js    # client:afterload — after load, GPU-only hydration
+  directives/afterload.js    # client:afterload: after load, GPU-only hydration
   styles/global.css          # tokens, type, document mode + film mode
 server.mjs                   # production static server (npm start)
 public/

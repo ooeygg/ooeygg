@@ -1,6 +1,6 @@
 /* The film runtime: Lenis turns wheel/touch/keys into one heavy, smoothed progress
    value; that progress scrubs the Theatre timeline; Theatre drives every scene.
-   Nothing on the page ever scrolls — the stage is fixed and scenes play in place.
+   Nothing on the page ever scrolls: the stage is fixed and scenes play in place.
 
    Markup API:
      [data-film="Sheet / object"]  element animated by that object (opacity, y in vh, scale)
@@ -15,7 +15,7 @@ import { LENGTH, chapters } from '../film/choreography.js';
 
 const film = document.documentElement.classList.contains('is-film');
 
-/* — Letter-by-letter headline assembly (Web Animations, no library) — */
+/* Letter-by-letter headline assembly (Web Animations, no library) */
 function splitNode(node) {
   if (node.nodeType === 3) {
     // Words are unbreakable boxes of letters; the spaces between them stay real spaces.
@@ -63,7 +63,7 @@ if (film) {
   const sheet = await sheetReady;
   const { sequence } = sheet;
 
-  /* — DOM scenes — */
+  /* DOM scenes */
   const sceneProps = {
     opacity: types.number(1, { range: [0, 1] }),
     y: types.number(0, { range: [-40, 40] }),
@@ -78,14 +78,14 @@ if (film) {
     }, rafDriver);
   }
 
-  /* — The CSS poster core follows the WebGL core (and stands in for it without a GPU) — */
+  /* The CSS poster core follows the WebGL core (and stands in for it without a GPU) */
   const posterCore = document.querySelector('.hero-poster-core');
   sheet.object('Stage / Core', coreProps).onValuesChange(({ x, y, scale }) => {
     // ~26vh per scene unit at the default camera distance
     posterCore.style.transform = `translate3d(${x * 26}vh, ${-y * 26}vh, 0) scale(${scale})`;
   }, rafDriver);
 
-  /* — Scroll → timeline, all in one frame — */
+  /* Scroll → timeline, all in one frame */
   const lenis = new Lenis({
     lerp: 0.075,
     wheelMultiplier: 0.85,
@@ -109,7 +109,7 @@ if (film) {
     const chapter = chapters.findLast((c) => sequence.position >= c.at - 0.6) ?? chapters[0];
     if (chapter !== shownChapter) {
       shownChapter = chapter;
-      railLabel.textContent = `${String(chapters.indexOf(chapter) + 1).padStart(2, '0')} — ${chapter.label}`;
+      railLabel.textContent = `${String(chapters.indexOf(chapter) + 1).padStart(2, '0')} · ${chapter.label}`;
       // The last chapter's footer bar owns the bottom edge.
       rail.classList.toggle('is-done', chapter === chapters.at(-1));
     }
@@ -122,7 +122,7 @@ if (film) {
     if (chapter) lenis.scrollTo((chapter.at / LENGTH) * lenis.limit, { duration: 2.2, immediate });
   };
 
-  /* — In-page links play the film to a chapter instead of jumping — */
+  /* In-page links play the film to a chapter instead of jumping */
   document.addEventListener('click', (e) => {
     const link = e.target.closest('a[href^="#"]');
     if (!link) return;
@@ -130,7 +130,7 @@ if (film) {
     play(link.getAttribute('href').slice(1) || 'hero');
   });
 
-  /* — Tabbing into a scene plays the film to it, so focus never lands on something invisible — */
+  /* Tabbing into a scene plays the film to it, so focus never lands on something invisible */
   document.addEventListener('focusin', (e) => {
     const scene = e.target.closest('[data-chapter]');
     if (scene) play(scene.dataset.chapter);

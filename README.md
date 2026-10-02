@@ -4,7 +4,7 @@
   <img alt="Snake eating my GitHub contribution graph" src="https://raw.githubusercontent.com/ooeygg/ooeygg/output/github-snake.svg" />
 </picture>
 
-## Ember — Immersive Starter
+## Ember: Immersive Starter
 
 This repo also holds **Ember**, a free and open-source starter for cinematic,
 scroll-driven websites. Scrolling plays a film instead of moving a page.

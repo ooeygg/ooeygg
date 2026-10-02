@@ -2,7 +2,7 @@
    Positions run 0 → LENGTH; scrolling the full page plays the timeline once.
    Each keyframe is [position, value] or [position, value, ease] where ease shapes the
    segment leaving that keyframe. Tune visually with Theatre Studio (`npm run dev`,
-   then open /?studio), export, and save the file as src/film/state.json — it then
+   then open /?studio), export, and save the file as src/film/state.json; it then
    takes precedence over this file. */
 
 export const LENGTH = 10;
@@ -29,7 +29,7 @@ const enter = (from, to, rise = 8) => ({
 });
 
 export const tracks = {
-  /* ——— DOM scenes (props: opacity, y in vh, scale) ——— */
+  /* DOM scenes (props: opacity, y in vh, scale) */
   'Hero / copy': {
     opacity: [[0, 1], [0.35, 1], [1.4, 0]],
     y: [[0, 0], [1.4, -10, 'in']],
@@ -50,7 +50,7 @@ export const tracks = {
   'Contact / cta': enter(8.8, 9.5, 4),
   'Contact / bar': { opacity: [[9.2, 0], [9.8, 1]] },
 
-  /* ——— WebGL stage (units are scene units; the core is ~1.4 radius) ——— */
+  /* WebGL stage (units are scene units; the core is ~1.4 radius) */
   'Stage / Camera': {
     z: [[0, 5], [1.5, 3.6], [3, 4.4], [5, 5.2]],
   },
@@ -67,7 +67,7 @@ export const tracks = {
   'Stage / Bloom': { intensity: [[0, 0.9], [9.5, 1.1]] },
 };
 
-/* ——— Conversion to Theatre's on-disk project state ——— */
+/* Conversion to Theatre's on-disk project state */
 
 // Bezier handles as [x1, y1, x2, y2] for the segment leaving a keyframe.
 const EASES = {

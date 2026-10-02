@@ -54,7 +54,7 @@ function LenisBridge() {
   return null;
 }
 
-/* Smoothed |scroll velocity|, 0 at rest — scrolling reads as thrust, not movement. */
+/* Smoothed |scroll velocity|, 0 at rest; scrolling reads as thrust, not movement. */
 function useThrust() {
   const { scroll } = useScrollbar();
   const thrust = useRef(0);
@@ -65,7 +65,7 @@ function useThrust() {
   return thrust;
 }
 
-/* Drifting ember particles — the "alive" layer; they stream upward with scroll thrust */
+/* Drifting ember particles: the "alive" layer; they stream upward with scroll thrust */
 function Embers({ count = 350, unit, thrust }) {
   const ref = useRef();
   const film = useTheatre('Stage / Embers', { opacity: types.number(0.85, { range: [0, 1] }) });
@@ -113,7 +113,7 @@ function Embers({ count = 350, unit, thrust }) {
   );
 }
 
-/* Molten core — distorted icosahedron, slow tumble, choreographed by the film */
+/* Molten core: distorted icosahedron, slow tumble, choreographed by the film */
 function Core({ thrust }) {
   const group = useRef();
   const mesh = useRef();
@@ -199,7 +199,7 @@ function Stage({ onReady }) {
   );
 }
 
-/* WebGL stage — hydrated by client:afterload (after first paint, GPU devices only);
+/* WebGL stage, hydrated by client:afterload (after first paint, GPU devices only);
    fades in over the CSS poster once shaders are compiled. Client-only render. */
 export default function Hero3D() {
   const [mounted, setMounted] = useState(false);
