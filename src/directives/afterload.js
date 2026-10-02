@@ -2,7 +2,8 @@
    so heavy islands (the WebGL hero) never compete with first paint.
    Skips hydration entirely when WebGL would be software-rendered (no GPU, or a
    blocklisted driver): the scene would run at a few fps and freeze scrolling, so the
-   static CSS poster stays instead — and the three.js chunk is never downloaded. */
+   static CSS poster stays instead — and the three.js chunk is never downloaded.
+   Reduced-motion visitors also keep the still poster. */
 function hasHardwareWebGL() {
   const canvas = document.createElement('canvas');
   const gl =
@@ -17,7 +18,7 @@ function hasHardwareWebGL() {
 }
 
 export default async (load) => {
-  if (!hasHardwareWebGL()) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !hasHardwareWebGL()) return;
   if (document.readyState !== 'complete') {
     await new Promise((resolve) => addEventListener('load', resolve, { once: true }));
   }
